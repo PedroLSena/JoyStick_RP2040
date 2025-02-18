@@ -1,128 +1,169 @@
-Comunicação Serial
-Vídeo de ensaio: https://youtube.com/shorts/osiNejsofkg
-Este projeto demonstra a integração de diversas tecnologias e periféricos utilizando o Raspberry Pi Pico (ou placa compatível). Nele, você encontrará:
+Aqui está um exemplo de **README.md** para o seu projeto. Ele descreve o propósito do projeto, como configurar o ambiente, como compilar e executar o código, e outras informações relevantes.
 
-Controle de LEDs WS2812 em uma matriz 5x5 para exibir dígitos (0–9).
-Display SSD1306 128x64 para exibir caracteres e mensagens.
-Entrada de caracteres via Serial Monitor para exibição no display.
-Interrupções com debouncing para tratamento de botões que alternam o estado de LEDs RGB (verde e azul).
-Envio de informações via UART para monitoramento no Serial Monitor.
-Funcionalidades do Projeto
-Modificação da Biblioteca font.h
+---
 
-Adicione caracteres minúsculos à biblioteca font.h. Use sua criatividade para definir os novos caracteres.
-Observação: A modificação deve ser realizada diretamente no arquivo font.h para que os caracteres minúsculos sejam exibidos corretamente no display.
+# Projeto de Controle de Joystick com Display e LEDs
 
-Entrada de Caracteres via PC
+Este projeto utiliza a placa **BitDogLab** com o microcontrolador **RP2040** para criar um sistema interativo que controla um quadrado na tela de um display **SSD1306** usando um joystick. Além disso, os valores do joystick são usados para controlar a intensidade de LEDs RGB via PWM. O projeto também inclui funcionalidades adicionais, como a alternância de estilos de borda no display e o controle de LEDs através de botões.
 
-Utilize o Serial Monitor (por exemplo, via VS Code) para digitar caracteres.
-Cada caractere digitado é exibido no display SSD1306.
-Se um número entre 0 e 9 for digitado, o símbolo correspondente é exibido na matriz 5x5 WS2812.
-Interação com o Botão A
+---
 
-Pressionar o Botão A alterna o estado do LED RGB Verde (ligado/desligado).
-A operação é registrada de duas formas:
-Uma mensagem informativa é exibida no display SSD1306.
-Um texto descritivo é enviado ao Serial Monitor.
-Interação com o Botão B
+## Funcionalidades
 
-Pressionar o Botão B alterna o estado do LED RGB Azul (ligado/desligado).
-A operação é registrada de duas formas:
-Uma mensagem informativa é exibida no display SSD1306.
-Um texto descritivo é enviado ao Serial Monitor.
-Requisitos do Projeto
-Uso de Interrupções:
-Todas as funcionalidades relacionadas aos botões são implementadas utilizando rotinas de interrupção (IRQ).
+1. **Controle de Quadrado no Display**:
+   - O joystick controla a posição de um quadrado na tela do display SSD1306.
+   - O quadrado não ultrapassa os limites da tela.
 
-Debouncing:
-Implementação de tratamento de bouncing dos botões via software (200 ms).
+2. **Controle de LEDs RGB**:
+   - O eixo X do joystick controla a intensidade do LED Vermelho.
+   - O eixo Y do joystick controla a intensidade do LED Azul.
+   - O LED Verde é alternado ao pressionar o botão do joystick.
 
-Controle de LEDs:
-Demonstração do controle de LEDs comuns (RGB) e LEDs endereçáveis WS2812 (matriz 5x5).
+3. **Estilos de Borda no Display**:
+   - Ao pressionar o botão do joystick, o estilo da borda do display alterna entre:
+     - Sem borda.
+     - Borda simples.
+     - Borda dupla.
 
-Utilização do Display 128x64:
-Exibição de informações utilizando fontes maiúsculas e minúsculas (após modificação da biblioteca font.h).
+4. **Controle de LEDs PWM**:
+   - O botão A ativa/desativa o controle de intensidade dos LEDs Vermelho e Azul.
 
-Envio de Informação pela UART:
-Comunicação serial via UART para monitoramento das operações.
+---
 
-Organização e Comentários no Código:
-O código está modularizado e comentado para facilitar a compreensão e manutenção.
+## Componentes Utilizados
 
-Hardware Necessário
-Microcontrolador: Raspberry Pi Pico (ou placa compatível com o SDK Pico).
-Display: SSD1306 128x64 (conectado via I2C).
-Matriz de LEDs WS2812: Matriz 5x5 (25 LEDs) controlada via PIO.
-LEDs RGB: LEDs comuns para indicação (verde, azul e vermelho).
-Botões: Dois botões para alternar os estados dos LEDs.
-Protoboard e cabos para realizar as conexões.
-Pinagem e Conexões
-Display SSD1306 (I2C):
+- **Placa BitDogLab** com RP2040.
+- **Display OLED SSD1306** (128x64 pixels) conectado via I2C.
+- **Joystick analógico** conectado aos pinos ADC.
+- **LEDs RGB** conectados aos pinos PWM.
+- **Botões** para controle adicional.
 
-SDA: GPIO 14
-SCL: GPIO 15
-Endereço I2C: 0x3C
-Matriz de LEDs WS2812:
+---
 
-Pino de dados: GPIO 7
-LEDs RGB (indicadores):
+## Configuração do Ambiente
 
-LED Verde: GPIO 11
-LED Azul: GPIO 12
-LED Vermelho: GPIO 13 (utilizado também na matriz, conforme necessário)
-Botões:
+### Dependências
 
-Botão A: GPIO 5
-Botão B: GPIO 6
-Instalação e Compilação
-Pré-requisitos:
+Para compilar e executar este projeto, você precisará das seguintes ferramentas:
 
-Instale o SDK do Raspberry Pi Pico.
-Configure o ambiente de desenvolvimento (VS Code, CMake, etc.).
-Certifique-se de possuir as bibliotecas necessárias, como pico/stdlib.h, hardware/i2c.h, hardware/pio.h, hardware/gpio.h, hardware/clocks.h e outras.
-Configuração do Projeto:
+1. **SDK do Raspberry Pi Pico**:
+   - Instale o [Raspberry Pi Pico SDK](https://github.com/raspberrypi/pico-sdk).
 
-Clone este repositório para sua máquina.
-Verifique se os arquivos:
-inc/ssd1306.h
-inc/font.h (modificado para incluir os caracteres minúsculos)
-matriz_led.pio.h
-estão na estrutura correta do projeto.
-Configure o CMakeLists.txt para incluir todos os arquivos fonte e dependências.
-Compilação:
+2. **Compilador GCC para ARM**:
+   - Instale o compilador ARM (`arm-none-eabi-gcc`).
 
-Crie uma pasta de build e configure o projeto:
-bash
-Copiar
-Editar
-mkdir build && cd build
-cmake ..
-make
-Grave o firmware no Raspberry Pi Pico utilizando os procedimentos do SDK.
-Uso
-Conexão:
+3. **Ferramentas de Build**:
+   - Certifique-se de ter o `cmake` e o `make` instalados.
 
-Monte o hardware conforme a pinagem descrita.
-Conecte o Raspberry Pi Pico ao computador via USB.
-Execução:
+4. **Biblioteca SSD1306**:
+   - A biblioteca para controlar o display SSD1306 está incluída no projeto.
 
-Abra o Serial Monitor (por exemplo, no VS Code) com a taxa de transmissão configurada (geralmente 115200 baud).
-Digite um caractere:
-Se for um dígito (0 a 9), a matriz WS2812 exibirá o símbolo correspondente.
-Outros caracteres serão exibidos no display SSD1306.
-Pressione o Botão A para alternar o LED RGB Verde.
-Pressione o Botão B para alternar o LED RGB Azul.
-As operações serão registradas tanto no display quanto via Serial Monitor.
-Considerações Finais
-Customização:
-Você pode modificar a biblioteca font.h para incluir novos caracteres minúsculos ou alterar a fonte conforme necessário.
+### Conexões
 
-Expansão:
-Este projeto pode ser expandido para outras aplicações envolvendo comunicação serial, displays gráficos e controle de LEDs endereçáveis.
+| Componente   | Pino no RP2040 |
+|--------------|----------------|
+| Display SDA  | GPIO 14        |
+| Display SCL  | GPIO 15        |
+| Joystick X   | GPIO 26 (ADC0) |
+| Joystick Y   | GPIO 27 (ADC1) |
+| LED Vermelho | GPIO 13 (PWM)  |
+| LED Verde    | GPIO 11        |
+| LED Azul     | GPIO 12 (PWM)  |
+| Botão Joystick | GPIO 22      |
+| Botão A      | GPIO 5         |
 
-Contribuições:
-Sinta-se à vontade para contribuir com melhorias, correções ou adaptações.
+---
 
-Este projeto serve como base para o aprendizado e aplicação de técnicas de controle de hardware, interrupções, comunicação I2C e UART, e controle de LEDs WS2812 com o Raspberry Pi Pico.
+## Compilação e Execução
 
-Happy coding!
+Siga os passos abaixo para compilar e executar o projeto:
+
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/seu-usuario/seu-projeto.git
+   cd seu-projeto
+   ```
+
+2. **Configure o projeto**:
+   ```bash
+   mkdir build
+   cd build
+   cmake ..
+   ```
+
+3. **Compile o projeto**:
+   ```bash
+   make
+   ```
+
+4. **Carregue o firmware na placa**:
+   - Conecte a placa BitDogLab ao computador via USB.
+   - Copie o arquivo `.uf2` gerado para a placa:
+     ```bash
+     cp projeto.uf2 /media/seu-usuario/RPI-RP2/
+     ```
+
+5. **Execute o projeto**:
+   - A placa reiniciará e executará o código automaticamente.
+
+---
+
+## Estrutura do Código
+
+- **main.c**: Contém a lógica principal do projeto, incluindo o controle do joystick, LEDs e display.
+- **ssd1306.h**: Biblioteca para controlar o display SSD1306.
+- **CMakeLists.txt**: Configuração do projeto para compilação com CMake.
+
+---
+
+## Explicação do Código
+
+### Funções Principais
+
+1. **`joystick_control`**:
+   - Lê os valores do joystick e atualiza a posição do quadrado no display.
+   - Atualiza a intensidade dos LEDs com base nos valores do joystick.
+
+2. **`update_leds`**:
+   - Controla a intensidade dos LEDs Vermelho e Azul usando PWM.
+
+3. **`draw_border`**:
+   - Desenha a borda no display de acordo com o estilo atual.
+
+4. **`button_irq`**:
+   - Trata as interrupções dos botões, alternando o LED Verde e o estilo da borda.
+
+---
+
+## Vídeo de Demonstração
+
+[Link para o vídeo de demonstração](#) *(adicione um link para um vídeo mostrando o projeto em funcionamento)*.
+
+---
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## Contribuições
+
+Contribuições são bem-vindas! Siga os passos abaixo:
+
+1. Faça um fork do projeto.
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`).
+3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`).
+4. Faça push para a branch (`git push origin feature/nova-feature`).
+5. Abra um Pull Request.
+
+---
+
+## Contato
+
+Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para entrar em contato:
+
+
+---
+
+Esse README fornece uma visão geral do projeto e instruções claras para configurar, compilar e executar o código. Adapte as informações conforme necessário para o seu caso específico. 😊
