@@ -137,7 +137,7 @@ Siga os passos abaixo para compilar e executar o projeto:
 
 ## Vídeo de Demonstração
 
-[Link para o vídeo de demonstração](#) *(adicione um link para um vídeo mostrando o projeto em funcionamento)*.
+[https://youtube.com/shorts/9BxKz70-Eyw?feature=share](#) *(adicione um link para um vídeo mostrando o projeto em funcionamento)*.
 
 ---
 
